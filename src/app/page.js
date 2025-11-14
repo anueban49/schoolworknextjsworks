@@ -87,6 +87,9 @@ const Agent = ({ profile, agentname, job, mileage }) => {
 const HomePage = () => {
   return (
     <>
+    <div>
+      <Link href="/tictactoe">Tic Tac Toe</Link>
+    </div>
       <div>
         <Link href="/todo">To-Do task</Link>
       </div>

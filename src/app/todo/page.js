@@ -66,8 +66,14 @@ export default function todoApp() {
           </div>
 
           <CardContent className="flex flex-col gap-2">
-            {todos.filter(((todo) => todo.status === STATUS.INCOMPLETE && todo.status === STATUS.COMPLETE).map((
+            {todos.filter(
+              (todo) => 
+                todo.status === STATUS.INCOMPLETE ||
+                todo.status === STATUS.COMPLETE
+              )
+              .map((todo, i) => (
               <div
+              key={todo.id}
                 className="w-80 grid grid-cols-10 grid-rows-1 items-center "
               >
                 <Checkbox
@@ -92,7 +98,7 @@ export default function todoApp() {
                 </Button>
                 
               </div>
-            )))}
+            ))}
           </CardContent>
         </Card>
       </main>
