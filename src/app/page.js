@@ -93,6 +93,9 @@ const HomePage = () => {
       <div>
         <Link href="/todo">To-Do task</Link>
       </div>
+      <div>
+        <Link href="/movies">Movies</Link>
+      </div>
       <main className="flex flex-col items-center px-4 py-16 gap-10">
         <Page>
           <div className="flex flex-col items-center">
