@@ -1,5 +1,33 @@
-"use client";
+
 import * as React from "react";
+
+import apiMovieData from "./apiMovieDatas";
+import { MediaDVD } from "@/app/_components/MediaDVD";
+import { useState, useEffect } from "react";
+if (apiMovieData) {console.log("data found")};
+
+
+
+
+
+
+
+export default async function MoviePage() {
+  const movies = await apiMovieData();
+  return (
+    <>
+    <div>
+      {movies.map(movie => (
+        <MediaDVD key={movie.id} movie={movie}/>
+      ))}
+    </div>
+    </>
+  )
+}
+
+
+
+
 // import Image from "next/image";
 
 // import { Input } from "@/components/ui/input";
