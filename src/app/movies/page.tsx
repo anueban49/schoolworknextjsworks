@@ -13,7 +13,12 @@ if (apiMovieData) {console.log("data found")};
 
 
 export default async function MoviePage() {
-  const movies = await apiMovieData();
+    const [data, setData] = useState();
+    useEffect((
+        const movies = await apiMovieData();
+    ) => {}, [])
+
+  
   return (
     <>
     <div>
