@@ -1,50 +1,93 @@
+"use client";
 
 import * as React from "react";
 
-import apiMovieData from "./apiMovieDatas";
 import { MediaDVD } from "@/app/_components/MediaDVD";
 import { useState, useEffect } from "react";
-if (apiMovieData) {console.log("data found")};
+// import { Select, SelectItem } from "@/components/ui/select";
+export type Movie = {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids?: number[];
+  id?: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: any;
+  vote_count: number;
+};
 
+type Response = {
+  page: number;
+  result: Movie[];
+  total_pages: number;
+  total_results: number;
+};
+const HomePage = () => {
+  const [movies, setMovies] = useState<Movie[]>([]);
 
+  useEffect(() => {
+    const getMovieData = async () => {
+      const res = await fetch(
+        "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
+        {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYWJiZDAxNWU5ZDZjNTA1ZGU0ZmEyNDhiMWYyMDkzYyIsIm5iZiI6MTc2MzUyNDE0NC40NjcsInN1YiI6IjY5MWQzZTMwYmIxOTJjNzRiZTdhZDZkMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UKzUZ8eqp_d8_1_19PSwL4iBXV2c5qiM0DyUXwAGCzo",
+          },
+        }
+      );
+      const response = await res.json();
+      setMovies(response.results);
+    };
 
+    getMovieData();
+  }, []);
 
-
-
-
-export default async function MoviePage() {
-    const [data, setData] = useState();
-    useEffect((
-        const movies = await apiMovieData();
-    ) => {}, [])
-
-  
   return (
     <>
-    <div>
-      {movies.map(movie => (
-        <MediaDVD key={movie.id} movie={movie}/>
-      ))}
-    </div>
+      <div className="border-box w-screen h-fit flex flex-col gap-4">
+        <div className="w-full h-10">
+          <span></span>
+
+          <input />
+          <span></span>
+        </div>
+        <div className="w-full aspect-12/5 overflow-x-scroll">
+          <div className="w-fit flex">
+            {movies.map((el, i) => {
+              return (
+                <MediaDVD
+                  title={el.title}
+                  overview={el.overview}
+                  poster_path={
+                    "https://image.tmdb.org/t/p/original" + el.backdrop_path
+                  }
+                  vote_average={el.vote_average.toFixed(1)}
+                  vote_count={el.vote_count}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-
-
+export default HomePage;
 
 // import Image from "next/image";
 
 // import { Input } from "@/components/ui/input";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectGroup,
-//   SelectItem,
-//   SelectLabel,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
+
 // import {
 //   Carousel,
 //   CarouselContent,
@@ -54,7 +97,6 @@ export default async function MoviePage() {
 // import { Fullscreen } from "lucide-react";
 // import{ Moon } from "lucide-react";
 // import { Star } from "lucide-react";
-
 
 // const genres = [
 //   "Action",
@@ -243,4 +285,3 @@ export default async function MoviePage() {
 //   );
 // };
 // export default MoviesPage;
-
