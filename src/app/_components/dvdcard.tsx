@@ -11,17 +11,20 @@ type DVDcardProps = {
 export const DVDcard = (props: DVDcardProps) => {
   return (
     <>
-      <div className="w-full aspect-23/44 rounded-2xl overflow-hidden">
+      <div className="aspect-23/44 rounded-2xl overflow-hidden bg-gray-200 scale-85">
         <div
-          className="w-full aspect-23/34 bg-contain bg-center bg-no-repeat"
+          className=" aspect-23/34 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${props.poster_path})` }}
         ></div>{" "}
-        <p style={{ color: "black", display: "flex", gap: "5px" }}>
-          <Star style={{ color: "yellow", fill: "yellow" }} />
-          {(props.vote_average).toFixed(1)}/10
-        </p>
-        <div className="flex flex-col gap-4 ">
-          <p style={{ color: "black", fontSize: "15px", fontWeight: "500" }}>{props.title}</p>
+        <div className="flex flex-col gap-4 p-4">
+          <p style={{ color: "black", display: "flex", gap: "5px", fontSize: "110%"}}>
+            <Star style={{ color: "yellow", fill: "yellow" }} />
+            {props.vote_average.toFixed(1)}/10
+          </p>
+
+          <p style={{ color: "black", fontSize: "200%", lineHeight:"1", fontWeight: "200" }}>
+            {props.title}
+          </p>
         </div>
       </div>
     </>

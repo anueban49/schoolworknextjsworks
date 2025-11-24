@@ -15,11 +15,11 @@ export const NowPlaying = (props: MediaProps) => {
     <>
       <div
         className="w-screen aspect-12/5 bg-cover bg-center bg-no-repeat "
-        style={{ backgroundImage: `url(${props.poster_path})`, padding: "40px"}}
+        style={{ backgroundImage: `url(${props.poster_path})`, padding: "10%"}}
       >
         <div className="w-full flex flex-col gap-4 align-center">
-          <p style={{ color: "white" }}>Now Playing:</p>
-          <h1 style={{ color: "white", fontSize: "40px"}}>{props.title}</h1>
+          <p style={{ color: "white", fontSize:"2em"}}>Now Playing:</p>
+          <h1 style={{ color: "white", fontSize: "4em", fontWeight:"700"}}>{props.title}</h1>
           <h2 style={{ color: "white" }}>{props.popularity}</h2>
           <p style={{ color: "white", display: "flex", gap: "5px"}}> 
             <Star style={{color: "yellow", fill: "yellow"}}/>

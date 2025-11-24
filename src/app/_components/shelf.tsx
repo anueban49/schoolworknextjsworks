@@ -1,10 +1,12 @@
+import { Button } from "@/components/ui/button";
+
+import { useState } from "react";
 type ShelfProps = {
   title: string;
-  elements: any[];
+  elements: object;
+  arraylength: number;
+  button: boolean;
 };
-import { Button } from "@/components/ui/button";
-import { DVDcard } from "./dvdcard";
-import { useState } from "react";
 export const Shelf = (props: ShelfProps) => {
   const [visibleCount, setVisibleCount] = useState(10);
   return (
@@ -13,11 +15,15 @@ export const Shelf = (props: ShelfProps) => {
         <h1 className="p-4" style={{ fontWeight: "500", fontSize: "20px" }}>
           {props.title}
         </h1>
-        {visibleCount < props.elements.length && (
-          <Button className="bg-transparent text-black w-30"
-          onClick={() => {setVisibleCount(props.elements.length)}}>
+        {visibleCount < props.arraylength && (
+          <button
+            className="bg-transparent text-black w-30"
+            onClick={() => {
+              setVisibleCount(props.arraylength);
+            }}
+          >
             See More
-          </Button>
+          </button>
         )}
       </div>
 
