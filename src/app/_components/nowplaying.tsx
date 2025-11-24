@@ -10,7 +10,7 @@ type MediaProps = {
   vote_average: number;
   vote_count: number;
 };
-export const MediaDVD = (props: MediaProps) => {
+export const NowPlaying = (props: MediaProps) => {
   return (
     <>
       <div
@@ -22,7 +22,7 @@ export const MediaDVD = (props: MediaProps) => {
           <h1 style={{ color: "white", fontSize: "40px"}}>{props.title}</h1>
           <h2 style={{ color: "white" }}>{props.popularity}</h2>
           <p style={{ color: "white", display: "flex", gap: "5px"}}> 
-            <Star/>
+            <Star style={{color: "yellow", fill: "yellow"}}/>
             {props.vote_average}/10</p>
         </div>
       </div>

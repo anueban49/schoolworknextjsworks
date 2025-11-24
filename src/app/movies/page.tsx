@@ -2,25 +2,52 @@
 
 import * as React from "react";
 
-import { MediaDVD } from "@/app/_components/MediaDVD";
+import { NowPlaying } from "@/app/_components/nowplaying";
+import { DVDcard } from "@/app/_components/dvdcard";
 import { useState, useEffect } from "react";
-// import { Select, SelectItem } from "@/components/ui/select";
-export type Movie = {
-  adult: boolean;
-  backdrop_path: string;
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { SelectTrigger, SelectValue } from "@radix-ui/react-select";
+import { start } from "repl";
+import { MovieType } from "../form/apiMovieDatas";
+import { Button } from "@/components/ui/button";
+import { Shelf } from "../_components/shelf";
+
+export type MovieTypes = {
+  adult?: boolean;
+  backdrop_path?: string;
   genre_ids?: number[];
   id?: number;
-  original_language: string;
-  original_title: string;
+  original_language?: string;
+  original_title?: string;
   overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
+  popularity?: number;
+  poster_path?: string;
+  release_date?: string;
   title: string;
-  video: boolean;
+  video?: boolean;
   vote_average: any;
   vote_count: number;
 };
+export type Genre = {
+  id: number;
+  name: string;
+};
+export type Movie = MovieTypes;
+export type Upcoming = MovieTypes;
 
 type Response = {
   page: number;
@@ -28,54 +55,152 @@ type Response = {
   total_pages: number;
   total_results: number;
 };
+type ShelfProps = {
+  title: string;
+  elements: Movie[];
+};
+const API_BASE = "https://api.themoviedb.org/3";
+const AUTH_HEADERS = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYWJiZDAxNWU5ZDZjNTA1ZGU0ZmEyNDhiMWYyMDkzYyIsIm5iZiI6MTc2MzUyNDE0NC40NjcsInN1YiI6IjY5MWQzZTMwYmIxOTJjNzRiZTdhZDZkMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UKzUZ8eqp_d8_1_19PSwL4iBXV2c5qiM0DyUXwAGCzo",
+  },
+};
+
+const fetchJSON = (url: any) => {
+  return fetch(url, AUTH_HEADERS).then((res) => res.json());
+};
+    const [movies, setMovies] = useState<Movie[]>([]);
+    const [genres, setGenres] = useState<Genre[]>([]);
+    const [upcoming, setUpcoming] = useState<Upcoming[]>([]);
+useEffect(() => {
+  const getMovieData = async () => {
+
+    try {
+      const [movieData, genreData, upcomingData] = await Promise.all([
+        fetchJSON(`${API_BASE}/movie/now_playing?language=en-US&page=1`),
+        fetchJSON(`${API_BASE}/genre/movie/list?language=en`),
+        fetchJSON(`${API_BASE}/movie/upcoming?language=en-US&page=1`),
+      ]);
+
+      setMovies(movieData.results);
+      setGenres(genreData.genres);
+      setUpcoming(upcomingData.results);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  getMovieData();
+}, []);
 const HomePage = () => {
-  const [movies, setMovies] = useState<Movie[]>([]);
-
-  useEffect(() => {
-    const getMovieData = async () => {
-      const res = await fetch(
-        "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
-        {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYWJiZDAxNWU5ZDZjNTA1ZGU0ZmEyNDhiMWYyMDkzYyIsIm5iZiI6MTc2MzUyNDE0NC40NjcsInN1YiI6IjY5MWQzZTMwYmIxOTJjNzRiZTdhZDZkMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UKzUZ8eqp_d8_1_19PSwL4iBXV2c5qiM0DyUXwAGCzo",
-          },
-        }
-      );
-      const response = await res.json();
-      setMovies(response.results);
-    };
-
-    getMovieData();
-  }, []);
-
+  const [visibleCount, setVisibleCount] = useState(10);
   return (
     <>
       <div className="border-box w-screen h-fit flex flex-col gap-4">
-        <div className="w-full h-10">
-          <span></span>
-
-          <input />
+        <div className="w-full h-10 flex gap-4 items-center p-4">
+          <span>
+            <img src="\movie\icons\Logo.jpg" alt="MovieZ" />
+          </span>
+          <Select>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select a Genre" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel></SelectLabel>
+                </SelectGroup>
+              </SelectContent>
+            </SelectContent>
+          </Select>
+          <Input
+            className="w-40 scrollbar-hide"
+            placeholder="Search Movies"
+          ></Input>
           <span></span>
         </div>
-        <div className="w-full aspect-12/5 overflow-x-scroll">
-          <div className="w-fit flex">
+        <Carousel
+          className="w-screen aspect-12/5 overflow-x-scroll scrollbar-hide relative p-0 m-0 pl-0"
+          style={{ scrollbarWidth: "none" }}
+        >
+          <CarouselContent className="flex" style={{ scrollbarWidth: "none" }}>
             {movies.map((el, i) => {
               return (
-                <MediaDVD
-                  title={el.title}
-                  overview={el.overview}
-                  poster_path={
-                    "https://image.tmdb.org/t/p/original" + el.backdrop_path
-                  }
-                  vote_average={el.vote_average.toFixed(1)}
-                  vote_count={el.vote_count}
-                />
+                <CarouselItem key={i} className="w-screen aspect-12/5">
+                  <NowPlaying
+                    title={el.title}
+                    overview={el.overview}
+                    poster_path={
+                      "https://image.tmdb.org/t/p/original" + el.backdrop_path
+                    }
+                    vote_average={el.vote_average.toFixed(1)}
+                    vote_count={el.vote_count}
+                  />
+                </CarouselItem>
               );
             })}
-          </div>
+          </CarouselContent>
+          <CarouselPrevious className="absolute" />
+          <CarouselNext />
+        </Carousel>
+        <div className="flex items-center justify-between p-4">
+          {" "}
+          <h1 className="p-4" style={{ fontWeight: "500", fontSize: "20px" }}>
+            Upcoming
+          </h1>{" "}
+          <Button
+            className="bg-transparent text-black w-30"
+            onClick={() => {
+              setVisibleCount(upcoming.length);
+            }}
+          >
+            See More
+          </Button>
+        </div>
+        <div className="w-full px-10 py-4 gap-10 grid grid-cols-5 grid-rows-2">
+          {upcoming.slice(0, visibleCount).map((el, i) => {
+            return (
+              <DVDcard
+                key={3}
+                poster_path={
+                  "https://image.tmdb.org/t/p/original" + el.poster_path
+                }
+                title={el.title}
+                vote_average={el.vote_average}
+              />
+            );
+          })}
+        </div>
+        <div className="w-full px-10 py-4 gap-10 grid grid-cols-5 grid-rows-2">
+          {upcoming.slice(0, visibleCount).map((el, i) => {
+            return (
+              <DVDcard
+                key={i}
+                poster_path={
+                  "https://image.tmdb.org/t/p/original" + el.poster_path
+                }
+                title={el.title}
+                vote_average={el.vote_average}
+              />
+            );
+          })}
+        </div>
+        <div className="w-full px-10 py-4 gap-10 grid grid-cols-5 grid-rows-2">
+          {upcoming.slice(0, visibleCount).map((el, i) => {
+            return (
+              <DVDcard
+                key={i}
+                poster_path={
+                  "https://image.tmdb.org/t/p/original" + el.poster_path
+                }
+                title={el.title}
+                vote_average={el.vote_average}
+              />
+            );
+          })}
         </div>
       </div>
     </>
