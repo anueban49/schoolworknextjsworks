@@ -1,5 +1,6 @@
 
 import { Star } from "lucide-react";
+import { useEffect } from "react";
 
 type MediaProps = {
   title: string;
@@ -11,6 +12,7 @@ type MediaProps = {
   vote_count: number;
 };
 export const NowPlaying = (props: MediaProps) => {
+ 
   return (
     <>
       <div
