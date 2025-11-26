@@ -96,6 +96,9 @@ const HomePage = () => {
       <div>
         <Link href="/movies">Movies</Link>
       </div>
+            <div>
+        <Link href="/moviedynamic">Dynamic Movie Page</Link>
+      </div>
       <main className="flex flex-col items-center px-4 py-16 gap-10">
         <Page>
           <div className="flex flex-col items-center">

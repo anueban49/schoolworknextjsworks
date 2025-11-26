@@ -42,7 +42,7 @@ export type MovieTypes = {
   video?: boolean;
   vote_average: any;
   vote_count: number;
-};
+}; 
 export type Genre = {
   id: number;
   name: string;
@@ -149,7 +149,7 @@ const HomePage = () => {
         <Carousel
           id="promotionBanner"
           className="w-screen aspect-12/5 overflow-x-scroll scrollbar-hide relative p-0 m-0 pl-0"
-          style={{ scrollbarWidth: "none", padding: "0px" }}
+          style={{ width:"full", aspectRatio:"12/5", scrollbarWidth: "none", padding: "0px" }}
         >
           <CarouselContent className="flex" style={{ scrollbarWidth: "none" }}>
             {movies.map((el, i) => {
@@ -173,8 +173,7 @@ const HomePage = () => {
         </Carousel>
 
         <div
-          id="main"
-          className="max-screen h-fit flex flex-col justify-center px-10"
+          className="max-w-screen h-fit flex flex-col justify-center px-10"
         >
           <div className="flex items-center justify-between p-4">
             <h1 className="p-4" style={{ fontWeight: "500", fontSize: "20px" }}>
@@ -189,7 +188,7 @@ const HomePage = () => {
               See More
             </Button>
           </div>
-          <div className="px-10 py-4 grid grid-cols-5 grid-rows-2">
+          <div className="px-10 py-4 grid grid-cols-5 grid-rows-2" style={{gap:"2.5%"}}>
             {upcoming.slice(0, visibleCount).map((el, i) => {
               return (
                 <DVDcard
