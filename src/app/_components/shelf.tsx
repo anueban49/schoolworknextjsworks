@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 
-import { useState } from "react";
+import { useState, useEffect, ReactNode } from "react";
 type ShelfProps = {
+  category: string;
   title: string;
   elements: object;
   arraylength: number;
@@ -9,6 +10,19 @@ type ShelfProps = {
 };
 export const Shelf = (props: ShelfProps) => {
   const [visibleCount, setVisibleCount] = useState(10);
+  useEffect(() => {
+    const dataFetch = async () => {
+      try {
+        fetch(`https://api.themoviedb.org/3/movie/${category}?language=en-US&page=1`, {
+          headers: {
+            
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  }, []);
   return (
     <>
       <div className="flex items-center justify-between p-4">
