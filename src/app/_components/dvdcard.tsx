@@ -1,4 +1,6 @@
 import { Star } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useEffect } from "react";
 type DVDcardProps = {
   title: string;
   overview: string;
@@ -8,6 +10,8 @@ type DVDcardProps = {
   vote_average: number;
   vote_count: number;
 };
+
+//dynamic router that fetches api with dynamic param, used altogether with custom component.
 export const DVDcard = (props: DVDcardProps) => {
   return (
     <>

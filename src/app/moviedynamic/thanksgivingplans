@@ -1,0 +1,11 @@
+const ThanksGiving = {
+    main: ["Turkey", "Raspberry jam", "Gravy Bean Soup(?)", "CornBread(?)"],
+    appetizer: ["Blue Cheese", "Crackers", "Bagel"],
+    elCentre: ["Pumpkin Pie"]
+}
+
+const Recipes = {
+    "Pumpkin Pie": [
+        Ingredients= ["Pumpkin, Cinnamon, Nuts, Cloves, Sugar, Egg, Salt, Ginger, Pie Crust"]
+    ]
+}

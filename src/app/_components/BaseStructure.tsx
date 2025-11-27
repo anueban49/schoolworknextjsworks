@@ -15,8 +15,7 @@ import { Genre } from "../movies/page";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Moon } from "lucide-react";
-import { Children } from "react";
-
+// todos: implement search algorithm and genre function
 export const BaseStructure = ({children}: BaseStructureType) => {
   const [genres, setGenres] = useState<Genre[]>([]);
   useEffect(() => {
@@ -32,6 +31,7 @@ export const BaseStructure = ({children}: BaseStructureType) => {
           }
         );
         const data = await res.json();
+        console.log("Genres", data)
         setGenres(data.genres);
       } catch (error) {
         console.log(error);
