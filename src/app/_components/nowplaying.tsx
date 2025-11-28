@@ -31,7 +31,7 @@ export const NowPlaying = () => {
     const fetchNowPlaying = async () => {
       try {
         const res = await fetch(
-          "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
+          `${process.env.TMDB_BASE_URL}/movie/now_playing?language=en-US&page=1`,
           {
             headers: {
               accept: "application/json",
@@ -50,13 +50,14 @@ export const NowPlaying = () => {
   }, []);
   return (
     <Carousel
-      id="promotionBanner"
       className="w-full aspect-12/5 overflow-x-scroll scrollbar-hide relative p-0 m-0 pl-0"
       style={{
         width: "full",
         aspectRatio: "12/5",
         scrollbarWidth: "none",
         padding: "0px",
+        zIndex:"0",
+        position: "relative"
       }}
     >
       <CarouselContent className="flex" style={{ scrollbarWidth: "none" }}>

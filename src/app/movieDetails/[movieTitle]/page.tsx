@@ -1,28 +1,29 @@
-"use client";
-import { useState, useEffect, ReactNode, use } from "react";
-
+'use client'
 import { BaseStructure } from "@/app/_components/BaseStructure";
+import { useState, useEffect, use } from "react";
+
+
 import { MovieTypes } from "@/app/_components/movietypes";
 import { DVDcard } from "@/app/_components/dvdcard";
 
-interface CategorySectionProps {
+interface movieDetailsProps {
   params: {
-    category: string;
+    movieDetails: string;
   };
 }
 const CategorySecton = ({
   params,
 }: {
-  params: Promise<{ categoryName: string }>;
+  params: Promise<{ movieTitle: string }>;
 }) => {
-  const { categoryName } = use(params);
+  const { movieTitle } = use(params);
   const [datas, setDatas] = useState<MovieTypes[]>([]);
   useEffect(() => {
     const dataFetch = async () => {
       console.log(process.env.TMDB_BASE_URL);
       try {
         const res = await fetch(
-          `${process.env.TMDB_BASE_URL}/movie/${categoryName}?language=en-US&page=1`,
+          `${process.env.TMDB_BASE_URL}/movie/${movieTitle}?language=en-US&page=1`,
           {
             headers: {
               accept: "application/json",
@@ -46,16 +47,7 @@ const CategorySecton = ({
       <BaseStructure>
 
       <div className="w-full px-10 py-4 gap-10 grid grid-cols-5 grid-rows-2">
-        {datas.map((el, id) => (
-          <DVDcard
-            key={id}
-            title={el.title}
-            overview={el.overview}
-            vote_average={el.vote_average}
-            vote_count={el.vote_count}
-            poster_path={`${process.env.TMDB_IMAGE_SERVICE_URL}/original${el.poster_path}`}
-          />
-        ))}
+        {movieTitle}
 
       </div>
       </BaseStructure>

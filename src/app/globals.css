@@ -156,3 +156,6 @@ p {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+[data-radix-popper-content-wrapper] {
+  z-index: 9999 !important;
+}
