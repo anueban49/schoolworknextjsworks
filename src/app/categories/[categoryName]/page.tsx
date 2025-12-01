@@ -7,15 +7,18 @@ import { DVDcard } from "@/app/_components/dvdcard";
 
 interface CategorySectionProps {
   params: {
-    params: Promise<{ categoryName: string }>
+    category: string;
   };
 }
-const CategorySecton = (props: CategorySectionProps) => {
+const CategorySecton = ({
+  params,
+}: {
+  params: Promise<{ categoryName: string }>;
+}) => {
   const { categoryName } = use(params);
   const [datas, setDatas] = useState<MovieTypes[]>([]);
   useEffect(() => {
     const dataFetch = async () => {
-      console.log(process.env.TMDB_BASE_URL);
       try {
         const res = await fetch(
           `${process.env.TMDB_BASE_URL}/movie/${categoryName}?language=en-US&page=1`,
@@ -44,7 +47,7 @@ const CategorySecton = (props: CategorySectionProps) => {
       <div className="w-full px-10 py-4 gap-10 grid grid-cols-5 grid-rows-2">
         {datas.map((el, id) => (
           <DVDcard
-            key={id}
+            key={el.id}
             title={el.title}
             overview={el.overview}
             vote_average={el.vote_average}

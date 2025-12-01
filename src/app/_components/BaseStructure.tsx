@@ -1,30 +1,17 @@
+'use client';
 export type BaseStructureType = {
   children: React.ReactNode;
 };
 import {
   Popover,
-  PopoverAnchor,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectGroup,
-  SelectLabel,
-  SelectItem,
-  SelectPortal,
-} from "@radix-ui/react-select";
-
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Moon } from "lucide-react";
-import { Route } from "next";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 
 export type Genre = {
   id: number;
@@ -94,7 +81,15 @@ export const BaseStructure = ({ children }: BaseStructureType) => {
             </PopoverTrigger>
             <PopoverContent>
               {genres.map((genre, id) => (
-                <Button key={genre.id} onClick={() => {router.push(`/genre/${genreName}`)}}>{genre.name}</Button>
+                <Button
+                  key={genre.id}
+                  onClick={() => {
+                    router.push(`/genre/${genre.id}`);
+                  }}
+                  // onClick={() => {console.log(`${genre.name} ${genre.id}`)}}
+                >
+                  {genre.name}
+                </Button>
               ))}
             </PopoverContent>
           </Popover>

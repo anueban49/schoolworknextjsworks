@@ -1,7 +1,5 @@
 import { Button } from "@/components/ui/button";
-
 import { useState, useEffect } from "react";
-
 import { useRouter } from "next/navigation";
 import { MovieTypes } from "./movietypes";
 import { DVDcard } from "./dvdcard";
@@ -11,7 +9,6 @@ type ShelfProps<T> = {
 };
 export const Shelf = <T,>({ title, category }: ShelfProps<T>) => {
   const router = useRouter();
-    const base = process.env.NEXT_PUBLIC_TMDB_BASE_URL+ `/original`;
   const [visibleCount, setVisibleCount] = useState(10);
   const [dvds, setDvds] = useState<MovieTypes[]>([]);
 
@@ -19,7 +16,7 @@ export const Shelf = <T,>({ title, category }: ShelfProps<T>) => {
     const dataFetch = async () => {
       try {
         const res = await fetch(
-          `https://api.themoviedb.org/3/movie/${category}?language=en-US&page=1`,
+          `${process.env.TMDB_BASE_URL}/movie/${category}?language=en-US&page=1`,
           {
             headers: {
               accept: "application/json",
@@ -60,12 +57,14 @@ export const Shelf = <T,>({ title, category }: ShelfProps<T>) => {
         {dvds.slice(0, visibleCount).map((dvd, i) => (
           
           <DVDcard
+          id={dvd.id}
           key={i}
           title={dvd.title}
           overview={dvd.overview}
           poster_path={`https://image.tmdb.org/t/p/original${dvd.poster_path}`}
           vote_average={dvd.vote_average}
           vote_count={dvd.vote_count}
+          
           ></DVDcard>
         ))}
       </div>

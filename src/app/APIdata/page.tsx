@@ -40,20 +40,24 @@ const dataPage = () => {
   useEffect(() => {
     const getMovieData = async () => {
       try {
-        const [movieData, genreData] = await Promise.all([
+        const [movieData, genreData, movieGenre] = await Promise.all([
           fetchJSON(
             `${process.env.TMDB_BASE_URL}/movie/now_playing?language=en-US&page=1`
           ),
           fetchJSON(
             `${process.env.TMDB_BASE_URL}/genre/movie/list?language=en`
           ),
+          fetchJSON(
+            `${process.env.TMDB_BASE_URL}/discover/movie?language=en&with_genres=adventure&page=1`
+          )
         ]);
 
         setMovies(movieData.results.genre_ids);
-
+        setMovieIds(movieGenre.results)
         setGenres(genreData.genres);
         console.log(movies);
         console.log(genres);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -70,6 +74,9 @@ const dataPage = () => {
         <div>
           {genre.id} {genre.name}
         </div>
+      ))}
+      {movieIds.map((el, id) => (
+        <div>{el.id} {el.name}</div>
       ))}
     </>
   );

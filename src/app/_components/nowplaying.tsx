@@ -41,7 +41,7 @@ export const NowPlaying = () => {
         );
         const data = await res.json();
         setNowplaying(data.results);
-        console.log(data.results);
+        console.log(data.results.videos);
       } catch (error) {
         console.log(error);
       }

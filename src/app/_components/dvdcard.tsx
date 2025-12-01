@@ -1,9 +1,11 @@
+'use client';
 import { Star } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { title } from "process";
 type DVDcardProps = {
+  id: number;
   title: string;
   overview: string;
   poster_path: string;
@@ -19,7 +21,7 @@ export const DVDcard = (props: DVDcardProps) => {
   return (
     <>
       <div className="aspect-23/44 rounded-2xl overflow-hidden bg-gray-200" 
-      onClick={() => { router.push(`/movieDetails/${props.title}`)}}>
+      onClick={() => { router.push(`/moviedetails/${props.id}`)}}>
         <div
           className=" aspect-23/34 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${props.poster_path})` }}
