@@ -7,11 +7,18 @@ import {
   SelectLabel,
   SelectItem,
 } from "@radix-ui/react-select";
-import { Genre } from "../movies/page";
+
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Moon } from "lucide-react";
 import { Children } from "react";
+import { Label } from "@radix-ui/react-select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverAnchor,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export const genreSection = () => {
   const [genres, setGenres] = useState<Genre[]>([]);
@@ -36,20 +43,24 @@ export const genreSection = () => {
     fetchGenres();
   }, []);
   return (
-    <Select>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Genres" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Genres</SelectLabel>
-          {genres.map((genre: Genre) => (
-            <SelectItem key={genre.id} value={genre.name}>
-              {genre.name}
-            </SelectItem>
-          ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+    <>
+      <Select>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Genres" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Genres</SelectLabel>
+            {genres.map((genre: Genre) => (
+              <SelectItem key={genre.id} value={genre.name}>
+                {genre.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+
+      
+    </>
   );
 };

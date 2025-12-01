@@ -60,6 +60,7 @@ export const Shelf = <T,>({ title, category }: ShelfProps<T>) => {
         {dvds.slice(0, visibleCount).map((dvd, i) => (
           
           <DVDcard
+          key={i}
           title={dvd.title}
           overview={dvd.overview}
           poster_path={`https://image.tmdb.org/t/p/original${dvd.poster_path}`}

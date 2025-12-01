@@ -7,14 +7,10 @@ import { DVDcard } from "@/app/_components/dvdcard";
 
 interface CategorySectionProps {
   params: {
-    category: string;
+    params: Promise<{ categoryName: string }>
   };
 }
-const CategorySecton = ({
-  params,
-}: {
-  params: Promise<{ categoryName: string }>;
-}) => {
+const CategorySecton = (props: CategorySectionProps) => {
   const { categoryName } = use(params);
   const [datas, setDatas] = useState<MovieTypes[]>([]);
   useEffect(() => {

@@ -250,7 +250,7 @@ const HomePage = () => {
                 <DVDcard
                   key={i}
                   poster_path={
-                    "https://image.tmdb.org/t/p/original" + el.poster_path
+                    process.env.TMDB_IMAGE_SERVICE_URL+ "/original" + el.poster_path
                   }
                   title={el.title}
                   vote_average={el.vote_average}

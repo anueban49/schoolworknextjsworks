@@ -1,7 +1,12 @@
 export type BaseStructureType = {
   children: React.ReactNode;
 };
-import { Popover } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Select,
   SelectTrigger,
@@ -12,12 +17,19 @@ import {
   SelectItem,
   SelectPortal,
 } from "@radix-ui/react-select";
-import { Genre } from "../movies/page";
+
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Moon } from "lucide-react";
 import { Route } from "next";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+
+export type Genre = {
+  id: number;
+  name: string;
+};
 // todos: implement search algorithm and genre function
 export const BaseStructure = ({ children }: BaseStructureType) => {
   const [genres, setGenres] = useState<Genre[]>([]);
@@ -66,32 +78,26 @@ export const BaseStructure = ({ children }: BaseStructureType) => {
         }}
       >
         <span>
-          <img src="\movie\icons\Logo.jpg" alt="MovieZ" onClick={() => {router.push(`/moviedynamic`)}}/>
+          <img
+            src="\movie\icons\Logo.jpg"
+            alt="MovieZ"
+            onClick={() => {
+              router.push(`/moviedynamic`);
+            }}
+          />
         </span>
         <div className="flex gap-2"></div>
         <div className="flex">
-          <Select>
-            <SelectTrigger className="w-[180px] z-50">
-              <SelectValue placeholder="Genres" />
-            </SelectTrigger>
-
-            <SelectContent className="absolute">
-              <SelectGroup className="fixed top-10 text-red-200 bg-blue-300 z-50">
-                <SelectLabel>Genres</SelectLabel>
-                {genres.map((genre: Genre) => (
-                  <SelectItem
-                    className="z-50"
-                    style={{ zIndex: "50" }}
-                    key={genre.id}
-                    value={genre.name}
-                  >
-                    {genre.name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline">Genres</Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              {genres.map((genre, id) => (
+                <Button key={genre.id} onClick={() => {router.push(`/genre/${genreName}`)}}>{genre.name}</Button>
+              ))}
+            </PopoverContent>
+          </Popover>
           <Input
             className="w-80 scrollbar-hide"
             placeholder="Search Movies"
