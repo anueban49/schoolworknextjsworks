@@ -10,6 +10,7 @@ interface CategorySectionProps {
     category: string;
   };
 }
+//when clciked, it fetches api data of that cerain media and renders it to an
 const CategorySecton = ({
   params,
 }: {
@@ -17,11 +18,12 @@ const CategorySecton = ({
 }) => {
   const { categoryName } = use(params);
   const [datas, setDatas] = useState<MovieTypes[]>([]);
+  const [currentPage, SetCurrentPage] = useState(1);
   useEffect(() => {
     const dataFetch = async () => {
       try {
         const res = await fetch(
-          `${process.env.TMDB_BASE_URL}/movie/${categoryName}?language=en-US&page=1`,
+          `${process.env.TMDB_BASE_URL}/movie/${categoryName}?language=en-US&${currentPage}`,
           {
             headers: {
               accept: "application/json",

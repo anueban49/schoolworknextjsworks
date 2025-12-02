@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { Moon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { ChevronRight } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 
 export type Genre = {
   id: number;
@@ -79,9 +81,11 @@ export const BaseStructure = ({ children }: BaseStructureType) => {
             <PopoverTrigger asChild>
               <Button variant="outline">Genres</Button>
             </PopoverTrigger>
-            <PopoverContent>
+            <PopoverContent className="">
               {genres.map((genre, id) => (
                 <Button
+                className="px-6 scale-80 py-0 my-{5px} rounded-[20px] text-[16px] font-normal"
+                variant={"outline"}
                   key={genre.id}
                   onClick={() => {
                     router.push(`/genre/${genre.id}`);
@@ -89,6 +93,7 @@ export const BaseStructure = ({ children }: BaseStructureType) => {
                   // onClick={() => {console.log(`${genre.name} ${genre.id}`)}}
                 >
                   {genre.name}
+                  <ChevronRight strokeWidth={3}/>
                 </Button>
               ))}
             </PopoverContent>

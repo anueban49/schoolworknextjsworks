@@ -7,7 +7,7 @@ import { Carousel } from "@/components/ui/carousel";
 
 interface Details {
   params: {
-    category: string;
+    movieId: string;
   };
 }
 const Moviedetails = ({ params }: { params: Promise<{ movieId: string }> }) => {
@@ -26,7 +26,8 @@ const Moviedetails = ({ params }: { params: Promise<{ movieId: string }> }) => {
           }
         );
         const data = await res.json();
-        setDatas(data);
+      
+        setDatas(data)
         console.log(data);
       } catch (error) {
         console.log(error);
@@ -41,13 +42,13 @@ const Moviedetails = ({ params }: { params: Promise<{ movieId: string }> }) => {
       <BaseStructure>
         <div className="w-full px-10 py-4 gap-10">
           <div className="flex justify-between">
-            <h1>{datas.title}</h1>
+            <h1 className="text-4xl font-medium">{datas.title}</h1>
             <p>{datas.release_date}</p>
-            <h3>{datas.overview}</h3>
           </div>
-          <img
-            src={`${process.env.TMDB_IMAGE_SERVICE_URL}/original${datas.backdrop_path}`}
-          />
+          <div style={{backgroundImage:"url"}}></div>
+          <img src={`${process.env.TMDB_IMAGE_SERVICE_URL}/original${datas.backdrop_path}`}/>
+          <div>{datas.genre_ids}</div>
+          <h3>{datas.overview}</h3>
           <div></div>
         </div>
       </BaseStructure>

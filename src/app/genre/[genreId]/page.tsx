@@ -7,6 +7,7 @@ import { useEffect, useState, use } from "react";
 import { MovieTypes } from "@/app/_components/movietypes";
 import { useParams } from "next/navigation";
 import { DVDcard } from "@/app/_components/dvdcard";
+import { Shelf } from "@/app/_components/shelf";
 //ideas: implement all api data as one component. {server component}
 //every time I need it, just call and clean the data ready for use => another section of function component {server componenet}
 //
@@ -16,7 +17,6 @@ type Params = {
 };
 
 const genreSection = () => {
-
   const { genreId } = useParams<Params>();
   const [datas, setDatas] = useState<MovieTypes[]>([]);
   useEffect(() => {
@@ -30,32 +30,34 @@ const genreSection = () => {
               Authorization: `Bearer ${process.env.API_KEY}`,
             },
           }
-        )
+        );
         if (!res.ok) {
           console.log("res not ok");
         }
         const data = await res.json();
         setDatas(data.results);
-        console.log(data)
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
     };
 
     dataFetch();
-  }, []);
+  }, [genreId]);
   return (
     <BaseStructure>
-      {datas.map((el, i) => (
-        <DVDcard
-          key={i}
-          title={el.title}
-          overview={el.overview}
-          poster_path={`https://image.tmdb.org/t/p/original${el.poster_path}`}
-          vote_average={el.vote_average}
-          vote_count={el.vote_count}
-        ></DVDcard>
-      ))}
+      <div className="w-full px-10 py-4 gap-10 grid grid-cols-5 grid-rows-2">
+        {datas.map((el, id) => (
+          <DVDcard
+            key={el.id}
+            title={el.title}
+            overview={el.overview}
+            vote_average={el.vote_average}
+            vote_count={el.vote_count}
+            poster_path={`${process.env.TMDB_IMAGE_SERVICE_URL}/original${el.poster_path}`}
+          />
+        ))}
+      </div>
     </BaseStructure>
   );
 };
