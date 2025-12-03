@@ -13,7 +13,7 @@ import { Moon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
-import { ChevronLeft } from "lucide-react";
+import { Search } from "../_components/search";
 
 export type Genre = {
   id: number;

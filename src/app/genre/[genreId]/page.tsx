@@ -8,6 +8,15 @@ import { MovieTypes } from "@/app/_components/movietypes";
 import { useParams } from "next/navigation";
 import { DVDcard } from "@/app/_components/dvdcard";
 import { Shelf } from "@/app/_components/shelf";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from "@/components/ui/pagination";
+import { Button } from "@/components/ui/button";
+import { ChevronRight } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 //ideas: implement all api data as one component. {server component}
 //every time I need it, just call and clean the data ready for use => another section of function component {server componenet}
 //
@@ -19,11 +28,14 @@ type Params = {
 const genreSection = () => {
   const { genreId } = useParams<Params>();
   const [datas, setDatas] = useState<MovieTypes[]>([]);
+  const [currentPage, SetCurrentPage] = useState(1);
+  const [totalpage, setTotalPage] = useState(1);
+
   useEffect(() => {
     const dataFetch = async () => {
       try {
         const res = await fetch(
-          `https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreId}&page=1`,
+          `${process.env.TMDB_BASE_URL}/discover/movie?language=en&with_genres=${genreId}&page=${currentPage}`,
           {
             headers: {
               accept: "application/json",
@@ -35,20 +47,28 @@ const genreSection = () => {
           console.log("res not ok");
         }
         const data = await res.json();
+
         setDatas(data.results);
-        console.log(data);
+        setTotalPage(data.pages);
       } catch (error) {
         console.log(error);
       }
     };
 
     dataFetch();
-  }, [genreId]);
+  }, [genreId, currentPage]);
+  const nextpage = () => {
+    SetCurrentPage((prev) => prev + 1);
+  };
+  const prevpage = () => {
+    SetCurrentPage((prev) => prev - 1);
+  };
   return (
     <BaseStructure>
       <div className="w-full px-10 py-4 gap-10 grid grid-cols-5 grid-rows-2">
         {datas.map((el, id) => (
           <DVDcard
+            id={el.id}
             key={el.id}
             title={el.title}
             overview={el.overview}
@@ -58,6 +78,23 @@ const genreSection = () => {
           />
         ))}
       </div>
+      <Pagination className="w-fit m-0">
+        <PaginationContent>
+          <PaginationItem>
+            <Button onClick={prevpage}>
+              <ChevronLeft />
+              Prev
+            </Button>
+          </PaginationItem>
+          <PaginationItem>{totalpage}</PaginationItem>
+          <PaginationItem>
+            <Button onClick={nextpage}>
+              Next
+              <ChevronRight />
+            </Button>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </BaseStructure>
   );
 };

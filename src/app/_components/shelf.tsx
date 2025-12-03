@@ -33,40 +33,40 @@ export const Shelf = <T,>({ title, category }: ShelfProps<T>) => {
 
     dataFetch();
   }, []);
- 
+
   return (
     <>
-      <div className="flex items-center justify-between p-4">
-        <h1 className="p-4" style={{ fontWeight: "500", fontSize: "20px" }}>
-          {title}
-        </h1>
-        {visibleCount < dvds.length && (
-          <Button
-            className="bg-transparent text-black w-30"
-            onClick={() => {
-              router.push(`/categories/${category}`);
-            }}
-          >
-            See More
-          </Button>
-        )}
-      </div>
+      <div className="xl:px-14 xl:justify-center">
+        <div className="flex items-center justify-between p-4">
+          <h1 className="p-4" style={{ fontWeight: "500", fontSize: "2em" }}>
+            {title}
+          </h1>
+          {visibleCount < dvds.length && (
+            <Button
+              className="bg-transparent text-black w-30 text-[1.5em]"
+              onClick={() => {
+                router.push(`/categories/${category}`);
+              }}
+            >
+              See More
+            </Button>
+          )}
+        </div>
 
-      {/*DVDcards section comes here ->. */}
-      <div className="DVDshelf, w-full px-10 py-4 gap-10 grid grid-cols-5 grid-rows-2">
-        {dvds.slice(0, visibleCount).map((dvd, i) => (
-          
-          <DVDcard
-          id={dvd.id}
-          key={i}
-          title={dvd.title}
-          overview={dvd.overview}
-          poster_path={`https://image.tmdb.org/t/p/original${dvd.poster_path}`}
-          vote_average={dvd.vote_average}
-          vote_count={dvd.vote_count}
-          
-          ></DVDcard>
-        ))}
+        {/*DVDcards section comes here ->. */}
+        <div className="DVDshelf w-full p-[4rem] gap-[2rem] grid grid-cols-5 grid-rows-2">
+          {dvds.slice(0, visibleCount).map((dvd, i) => (
+            <DVDcard
+              id={dvd.id}
+              key={i}
+              title={dvd.title}
+              overview={dvd.overview}
+              poster_path={`https://image.tmdb.org/t/p/original${dvd.poster_path}`}
+              vote_average={dvd.vote_average}
+              vote_count={dvd.vote_count}
+            ></DVDcard>
+          ))}
+        </div>
       </div>
     </>
   );

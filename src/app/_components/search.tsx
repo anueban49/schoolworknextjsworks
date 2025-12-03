@@ -1,13 +1,23 @@
+'use client';
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-function Search() {
+
+export const Search = () => {
   const [value, setValue] = useState("");
-  const searchItems = () => {
-
+  const fetchData = () => {
+    useEffect = async() => {
+      try {
+        fetch(`${process.env.API_BASE_URL}`)
+      }
+    }
   }
+  return <Input 
+  type="text" 
+  value={value} 
+  onChange={(e)=> {
+    setValue(e.target.value)
+  console.log(value)}} />;
+};
 
-  return (
-    <Input type="text" onChange={searchItems}/>
-  )
-}
+///search/movie?query=${searchValue}&language=en-US&page=${page}
 

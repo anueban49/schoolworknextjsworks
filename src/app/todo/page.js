@@ -58,7 +58,7 @@ export default function todoApp() {
                   ...todos,
                   { id: nanoid(), text: value, status: STATUS.INCOMPLETE },
                 ]);
-                setValue("");
+                setValue('');
               }}
             >
               Add

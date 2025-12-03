@@ -20,8 +20,10 @@ export const DVDcard = (props: DVDcardProps) => {
   const router = useRouter();
   return (
     <>
-      <div className="aspect-23/44 rounded-2xl overflow-hidden bg-gray-200" 
-      onClick={() => { router.push(`/moviedetails/${props.id}`)}}>
+      <div className=" aspect-23/44 rounded-[1em] overflow-hidden bg-gray-200 scale-95" 
+      onClick={() => { router.push(`/moviedetails/${props.id}`)}}
+      // onClick={() => {console.log(props.id)}}
+      >
         <div
           className=" aspect-23/34 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${props.poster_path})` }}
@@ -32,7 +34,7 @@ export const DVDcard = (props: DVDcardProps) => {
             {props.vote_average.toFixed(1)}/10
           </p>
 
-          <p style={{ color: "black", fontSize: "1.5vw", lineHeight:"1", fontWeight: "200" }}>
+          <p style={{ color: "black", fontSize: "2rem", lineHeight:"1", fontWeight: "200" }}>
             {props.title}
           </p>
         </div>
