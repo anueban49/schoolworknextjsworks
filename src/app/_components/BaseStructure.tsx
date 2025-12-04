@@ -1,48 +1,22 @@
-'use client';
+"use client";
 export type BaseStructureType = {
   children: React.ReactNode;
 };
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+export type Genre = {
+  id: number;
+  name: string;
+};
+
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Moon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
 import { Search } from "../_components/search";
 
-export type Genre = {
-  id: number;
-  name: string;
-};
 // todos: implement search algorithm and genre function
 export const BaseStructure = ({ children }: BaseStructureType) => {
-  const [genres, setGenres] = useState<Genre[]>([]);
   const router = useRouter();
-  useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const res = await fetch(
-          "https://api.themoviedb.org/3/genre/movie/list?language=en",
-          {
-            headers: {
-              accept: "application/json",
-              Authorization: `Bearer ${process.env.API_KEY}`,
-            },
-          }
-        );
-        const data = await res.json();
-        setGenres(data.genres);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchGenres();
-  }, []);
   return (
     <div
       style={{
@@ -67,7 +41,8 @@ export const BaseStructure = ({ children }: BaseStructureType) => {
         }}
       >
         <span>
-          <img
+          <img 
+          // homepage Logo
             src="\movie\icons\Logo.jpg"
             alt="MovieZ"
             onClick={() => {
@@ -77,27 +52,7 @@ export const BaseStructure = ({ children }: BaseStructureType) => {
         </span>
         <div className="flex gap-2"></div>
         <div className="flex">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline">Genres</Button>
-            </PopoverTrigger>
-            <PopoverContent className="">
-              {genres.map((genre, id) => (
-                <Button
-                className="px-6 scale-80 py-0 my-{5px} rounded-[20px] text-[16px] font-normal"
-                variant={"outline"}
-                  key={genre.id}
-                  onClick={() => {
-                    router.push(`/genre/${genre.id}`);
-                  }}
-                  // onClick={() => {console.log(`${genre.name} ${genre.id}`)}}
-                >
-                  {genre.name}
-                  <ChevronRight strokeWidth={3}/>
-                </Button>
-              ))}
-            </PopoverContent>
-          </Popover>
+          <Button variant={"outline"} onClick={() => {router.push(`moviedynamic/genre`)}}>Genres</Button>
           <Input
             className="w-80 scrollbar-hide"
             placeholder="Search Movies"

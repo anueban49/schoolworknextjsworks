@@ -32,6 +32,7 @@ export type VideoTypes = {
   name: string;
   site: string;
   type: string;
+  official: boolean;
 };
 
 export type VideoResponse = {
@@ -77,6 +78,10 @@ const Moviedetails = ({ params }: Details) => {
         setVideos(videoRes.results);
         setGenre(detailsRes.genres);
         console.log(detailsRes.genres);
+        console.log("videores by movieID:", videoRes.results);
+        console.log(
+          `${API_BASE}/movie/${movieId}/videos?language=en-US&api_key=1abbd015e9d6c505de4fa248b1f2093c`
+        );
       } catch (error) {
         console.error(error);
       }
@@ -87,64 +92,63 @@ const Moviedetails = ({ params }: Details) => {
 
   return (
     <>
-      <BaseStructure>
-        <div className="w-full px-10 py-4 gap-10">
-          <div className="flex justify-between">
-            <h1 className="text-4xl font-medium">{details?.title}</h1>
-            <div>
-              <p>{details?.release_date}</p>
-              <p>{details?.vote_average.toFixed(1)}</p>
-            </div>
-          </div>
-          <Carousel
-            className="w-full aspect-12/5 overflow-hidden scrollbar-hide "
-            style={{
-              width: "full",
-              aspectRatio: "12/5",
-              scrollbarWidth: "none",
-              padding: "0px",
-              position: "relative",
-              overflowX: "scroll",
-            }}
-          >
-            <CarouselContent className="w-full overflow-auto">
-              <CarouselItem
-                className="aspect-190/107 bg-no-repeat bg-contain bg-center"
-                style={{
-                  backgroundImage: `url(https://image.tmdb.org/t/p/original${details?.backdrop_path})`,
-                }}
-              ></CarouselItem>
-              {videos.map((video) =>
-                video.site === "YouTube" ? (
-                  <CarouselItem key={video.id} className="">
-                    <iframe
-                      src={`https://www.youtube.com/embed/${video.key}`}
-                      title={video.name}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </CarouselItem>
-                ) : null
-              )}
-            </CarouselContent>
-          </Carousel>
+      <div className="w-full px-10 py-4 gap-10">
+        <div className="flex justify-between">
+          <h1 className="text-4xl font-medium">{details?.title}</h1>
           <div>
-            {" "}
-            {genre.map((el, i) => (
-              <Button
-                key={i}
-                className="scale-95 rounded-2xl px-2 py-0"
-                variant={"outline"}
-              >
-                {el.name}
-              </Button>
-            ))}
+            <p>{details?.release_date}</p>
+            <p>{details?.vote_average.toFixed(1)}</p>
           </div>
-          <h3>{details?.overview}</h3>
         </div>
+        <Carousel
+          className="w-full aspect-12/5 overflow-hidden scrollbar-hide "
+          style={{
+            width: "full",
+            aspectRatio: "12/5",
+            scrollbarWidth: "none",
+            padding: "0px",
+            position: "relative",
+            overflowX: "scroll",
+          }}
+        >
+          <CarouselContent className="w-full overflow-auto">
+            <CarouselItem
+              className="aspect-190/107 bg-no-repeat bg-contain bg-center"
+              style={{
+                backgroundImage: `url(https://image.tmdb.org/t/p/original${details?.backdrop_path})`,
+              }}
+            ></CarouselItem>
+            {videos.map((video) =>
+              video.site === "YouTube" ? (
+                <CarouselItem key={video.id} className="">
+                  <iframe
+                    className="w-full aspect-12/5 object-contain"
+                    src={`${process.env.TMDB_BASE_URL}/movie/${video.id}/videos?language=en-US&api_key=${process.env.API_KEY}`}
+                    title={video.name}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </CarouselItem>
+              ) : null
+            )}
+          </CarouselContent>
+        </Carousel>
+        <div>
+          {" "}
+          {genre.map((el, i) => (
+            <Button
+              key={i}
+              className="scale-95 rounded-2xl px-2 py-0"
+              variant={"outline"}
+            >
+              {el.name}
+            </Button>
+          ))}
+        </div>
+        <h3>{details?.overview}</h3>
+      </div>
 
-        <div></div>
-      </BaseStructure>
+      <div></div>
     </>
   );
 };

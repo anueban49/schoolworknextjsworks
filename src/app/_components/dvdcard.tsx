@@ -21,7 +21,7 @@ export const DVDcard = (props: DVDcardProps) => {
   return (
     <>
       <div className=" aspect-23/44 rounded-[1em] overflow-hidden bg-gray-200 scale-95" 
-      onClick={() => { router.push(`/moviedetails/${props.id}`)}}
+      onClick={() => { router.push(`moviedynamic/moviedetails/${props.id}`)}}
       // onClick={() => {console.log(props.id)}}
       >
         <div

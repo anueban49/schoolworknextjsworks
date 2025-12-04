@@ -50,7 +50,7 @@ export const NowPlaying = () => {
         );
         const data = await res.json();
         setNowplaying(data.results);
-        
+        // console.log(data.results)
       } catch (error) {
         console.log(error);
       }
@@ -59,10 +59,10 @@ export const NowPlaying = () => {
   }, []);
   //movieId=true => fetch video api through there => write a function that fetches the video by [movieId] =key
   //prepare the iframe appear<=>disappear mode
-  const fetchVideos = async (movieId: number) => {
+  const fetchVideos = async (id: string) => {
     try {
       const res = await fetch(
-        `${process.env.TMDB_BASE_URL}/movie/${movieId}/videos?language=en-US`,
+        `${process.env.TMDB_BASE_URL}/movie/${id}/videos?language=en-US`,
         {
           headers: {
             accept: "application/json",
@@ -72,9 +72,9 @@ export const NowPlaying = () => {
       );
       const vid = await res.json();
       setVideo(vid.results);
-      console.log(video);
-      const trailer = vid.results.find((v: VideoTypes) => v.site === "YouTube");
-      if (trailer) setActiveTrailer(trailer.key);
+      console.log(vid.results);
+      // const trailer = vid.results.find((v: VideoTypes) => v.site === "YouTube");
+      // if (trailer) setActiveTrailer(trailer.key);
     } catch (error) {
       console.log(error);
     }

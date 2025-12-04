@@ -1,5 +1,7 @@
 "use client";
-
+//plan change: this DR will be displayed on iframe.
+//await the param that renders upon given genre id -> /discover/movie?language=en&with_genres=${genreIds}&page=${page}
+//this needs to be a grid 4x3 grid with pagination
 import { BaseStructure } from "@/app/_components/BaseStructure";
 import axios from "axios";
 
@@ -20,9 +22,9 @@ import { ChevronLeft } from "lucide-react";
 //ideas: implement all api data as one component. {server component}
 //every time I need it, just call and clean the data ready for use => another section of function component {server componenet}
 //
-
+//implement a function that sorts the genreids and shows results
 type Params = {
-  genreId: string;
+  genreId: number;
 };
 
 const genreSection = () => {
@@ -50,6 +52,7 @@ const genreSection = () => {
 
         setDatas(data.results);
         setTotalPage(data.pages);
+        console.log(data.results)
       } catch (error) {
         console.log(error);
       }
@@ -64,8 +67,8 @@ const genreSection = () => {
     SetCurrentPage((prev) => prev - 1);
   };
   return (
-    <BaseStructure>
-      <div className="w-full px-10 py-4 gap-10 grid grid-cols-5 grid-rows-2">
+    <>
+      <div className="w-full px-10 py-4 gap-10 grid grid-cols-4 grid-rows-3">
         {datas.map((el, id) => (
           <DVDcard
             id={el.id}
@@ -95,7 +98,8 @@ const genreSection = () => {
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-    </BaseStructure>
+    </>
   );
 };
+
 export default genreSection;
