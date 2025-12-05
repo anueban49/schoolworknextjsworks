@@ -1,14 +1,12 @@
 "use client";
 //page layout.specific: left side contains genre section, while right side contain filter function that sorts out the designed genre movies(4x3 grid with pagination).
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, use, ButtonHTMLAttributes } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
+import { useSearchParams } from "next/navigation";
+import { DVDcard } from "@/app/_components/dvdcard";
+import { MovieTypes } from "@/app/_components/movietypes";
 export type Genre = {
   id: number;
   name: string;
@@ -17,6 +15,10 @@ export type Genre = {
 const genrePage = () => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const router = useRouter();
+ const [results, setResults] = useState()
+  const searchparams = useSearchParams();
+  const genreIds = searchparams.get("genreIds")?.split(",") || [];
+
   useEffect(() => {
     const fetchGenres = async () => {
       try {
@@ -43,16 +45,36 @@ const genrePage = () => {
     fetchGenres();
   }, []);
   useEffect(() => {
-    const renderResults = async() => {
+    const renderResults = async () => {
       try {
-        const res = await fetch(`${process.env.TMDB_BASE_URL}/discover/movie?language=en&with_genres=${genreIds}&page=${page}`)
+        const res = await fetch(
+          `${process.env.TMDB_BASE_URL}/discover/movie?language=en&with_genres=${genreIds}&page=1`,
+          {
+            headers: {
+              accept: "application/json",
+              Authorization: `Bearer ${process.env.API_KEY}`,
+            },
+          }
+          
+        );
+        const data = await res.json();
+        setResults(data.results);
+        console.log(data.results)
+      } catch (error) {
+        console.log(error);
       }
-    }
-  })
-  const [select, setSelect] = useState(false);
-  const genreSelect = () => {
-    setSelect((prev) => !prev)
-  };
+    };
+    renderResults();
+  });
+  const handleClickgenre = (genreId: string) => {
+    const params = new URLSearchParams(searchparams.toString())
+    params.set("genreIds", genreId);
+    
+    const updatedGenreIds = genreIds?.includes(genreId)?
+    genreIds.filter((id) => id !== genreId) : [...genreIds, genreId];
+    params.set("genreIds", updatedGenreIds.join(","));
+    router.push(genreId + "?" + params);
+  }
   return (
     <>
       <div
@@ -62,14 +84,17 @@ const genrePage = () => {
         <div className="w-1/3 border-amber-400 border-2">
           {genres.map((genre, id) => (
             <Button
-            style={{padding: "2em, 0", borderRadius: "2em", fontSize:"1em", fontWeight:"400", scale:"0.8"}}
-            //   className="px-6 scale-80 py-0 my-{5px} rounded-[20px] text-[16px] font-normal"
-              variant={"outline"}
-              key={genre.id}
-              onClick={() => {
-                genreSelect;
-                console.log('selected ' ,genre.name);
+              style={{
+                padding: "2em, 0",
+                borderRadius: "2em",
+                fontSize: "1em",
+                fontWeight: "400",
+                scale: "0.8",
               }}
+              key={genre.id}
+              variant={"default"}
+              // onClick={() => genreSelect(genre.name, genre.id)}
+              onClick={() => {handleClickgenre(genre?.id);}}
             >
               {genre.name}
               <ChevronRight strokeWidth={3} />
@@ -77,9 +102,11 @@ const genrePage = () => {
           ))}
         </div>
         <div className="w-2/3">
-          {/* <iframe className="w-full h-screen" src="/genre/[genreId]">
-          </iframe> */}
-          <div></div>
+          <div>{results?.map((el, id) => (
+            <DVDcard>
+
+            </DVDcard>
+          ))}</div>
         </div>
       </div>
     </>

@@ -1,3 +1,4 @@
+// 'use client';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 // import { usePathname } from "next/navigation";
@@ -21,7 +22,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   // const pathname = usePathname();
-  // const isframePage =pathname.startsWith("/")
+  // const isframePage = pathname.startsWith("/iframe");
   return (
     <html lang="en">
       <body
