@@ -31,11 +31,11 @@ export const DVDcard = (props: DVDcardProps) => {
         <div className="flex flex-col" style={{padding:"3%", gap:"3%"}}>
           <p style={{ color: "black", display: "flex", gap: "5px", fontSize: "1em"}}>
             <Star style={{ color: "yellow", fill: "yellow" }} />
-            {props.vote_average.toFixed(1)}/10
+            {props?.vote_average.toFixed(1)}/10
           </p>
 
           <p style={{ color: "black", fontSize: "2rem", lineHeight:"1", fontWeight: "200" }}>
-            {props.title}
+            {props?.title}
           </p>
         </div>
       </div>

@@ -107,7 +107,7 @@ const genrePage = () => {
               variant={"outline"}
               // onClick={() => genreSelect(genre.name, genre.id)}
               onClick={() => {
-                handleClickgenre(genre.id);
+                handleClickgenre(genre.id.toString());
 
               }}
             >
