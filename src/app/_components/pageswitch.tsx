@@ -12,9 +12,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import { ChevronLeft } from "lucide-react";
+//tell the component that it expects an array. -> takes array as an parameter.
 
+type pageItems = {
+  totalPage: number;
+  
+}
 const pageSwitch = () => {
-    //
+  //
   const [currentPage, SetCurrentPage] = useState(1);
   const nextpage = () => {
     SetCurrentPage((prev) => prev + 1);
@@ -23,7 +28,7 @@ const pageSwitch = () => {
     SetCurrentPage((prev) => prev - 1);
   };
   return (
-    <>
+    <><div className="w-full, px-10">
       <Pagination className="w-fit m-0">
         <PaginationContent>
           <PaginationItem>
@@ -41,6 +46,7 @@ const pageSwitch = () => {
           </PaginationItem>
         </PaginationContent>
       </Pagination>
+    </div>
     </>
   );
 };

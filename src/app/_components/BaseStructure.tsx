@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { Moon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Search } from "../_components/search";
+import { SearchSection } from "../_components/SearchSection";
 
 // todos: implement search algorithm and genre function
 export const BaseStructure = ({ children }: BaseStructureType) => {
@@ -28,7 +28,6 @@ export const BaseStructure = ({ children }: BaseStructureType) => {
       }}
     >
       <div
-        id="header"
         className="Header"
         style={{
           maxWidth: "vw",
@@ -41,8 +40,8 @@ export const BaseStructure = ({ children }: BaseStructureType) => {
         }}
       >
         <span>
-          <img 
-          // homepage Logo
+          <img
+            // homepage Logo
             src="\movie\icons\Logo.jpg"
             alt="MovieZ"
             onClick={() => {
@@ -52,11 +51,12 @@ export const BaseStructure = ({ children }: BaseStructureType) => {
         </span>
         <div className="flex gap-2"></div>
         <div className="flex">
-          <Button variant={"outline"} onClick={() => {router.push(`moviedynamic/genre`)}}>Genres</Button>
-          <Input
+          <Button variant={"outline"} onClick={() => { router.push(`/moviedynamic/genre`) }}>Genres</Button>
+          {/* <Input
             className="w-80 scrollbar-hide"
             placeholder="Search Movies"
-          ></Input>
+          ></Input> */}
+          <SearchSection></SearchSection>
         </div>
 
         <span>

@@ -1,7 +1,5 @@
 "use client";
 import { useState, useEffect, ReactNode, use } from "react";
-
-import { BaseStructure } from "@/app/_components/BaseStructure";
 import { MovieTypes } from "@/app/_components/movietypes";
 import { DVDcard } from "@/app/_components/dvdcard";
 import { useParams } from "next/navigation";
@@ -59,37 +57,35 @@ const CategorySecton = () => {
   };
   return (
     <>
-      <BaseStructure>
-        <div className="w-full px-10 py-4 gap-10 grid grid-cols-5 grid-rows-2">
-          {datas.map((el, id) => (
-            <DVDcard
-              key={el.id}
-              title={el.title}
-              overview={el.overview}
-              vote_average={el.vote_average}
-              vote_count={el.vote_count}
-              poster_path={`${process.env.TMDB_IMAGE_SERVICE_URL}/original${el.poster_path}`}
-            />
-          ))}
-        </div>
-        <Pagination className="w-fit m-0">
-          <PaginationContent>
-            <PaginationItem>
-              <Button onClick={prevpage}>
-                <ChevronLeft />
-                Prev
-              </Button>
-            </PaginationItem>
-            <PaginationItem>{totalpage}</PaginationItem>
-            <PaginationItem>
-              <Button onClick={nextpage}>
-                Next
-                <ChevronRight />
-              </Button>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </BaseStructure>
+      <div className="w-full px-10 py-4 gap-10 grid grid-cols-5 grid-rows-2">
+        {datas.map((el, id) => (
+          <DVDcard
+            key={el.id}
+            title={el.title}
+            overview={el.overview}
+            vote_average={el.vote_average}
+            vote_count={el.vote_count}
+            poster_path={`${process.env.TMDB_IMAGE_SERVICE_URL}/original${el.poster_path}`}
+          />
+        ))}
+      </div>
+      <Pagination className="w-fit m-0">
+        <PaginationContent>
+          <PaginationItem>
+            <Button onClick={prevpage}>
+              <ChevronLeft />
+              Prev
+            </Button>
+          </PaginationItem>
+          <PaginationItem>{totalpage}</PaginationItem>
+          <PaginationItem>
+            <Button onClick={nextpage}>
+              Next
+              <ChevronRight />
+            </Button>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </>
   );
 };
