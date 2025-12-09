@@ -4,23 +4,18 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useSearchParams, useRouter } from "next/navigation";
 import { DVDcard } from "./dvdcard";
+import { Button } from "@/components/ui/button";
 import { MovieTypes } from "./movietypes";
 export const SearchSection = () => {
   const [value, setValue] = useState(""); // what user types
   const [query, setQuery] = useState(""); // actual search term
   const [results, setResults] = useState([]); // array of movies
   const [page, setPage] = useState(1);
-
+  const [showResult, setShowResult] = useState(false);
   const searchParams = useSearchParams();
 
-  // Run search when query or page changes
   useEffect(() => {
     if (!query) return;
-    // const movieData = async() => {
-    //   try {
-    //     const res = await fetch(`${process.env.TMDB_BASE_URL}`))
-    //   }
-    // }
     const searchResults = async () => {
       try {
         const res = await fetch(
@@ -45,7 +40,6 @@ export const SearchSection = () => {
     searchResults();
   }, [query, page]);
 
-  // When user clicks search:
   function runSearch() {
     setQuery(value);
     return (
@@ -65,58 +59,61 @@ export const SearchSection = () => {
           ))}
         </div>
       </div>
-    ); // this triggers the effect
+    );
   }
-  // function showresults() {
-  //   return (
-  //     <>
-  //     <div className="w-[30%] h-fit ">
-  //       {results.map((movie, id) => (
-  //         <DVDcard
-  //         id={movie.id}
-  //         key={id}
-  //         title={movie.title}
-  //         >
 
-  //         </DVDcard>
-  //       ))}
-  //     </div>
-  //     </>
-  //   )
-  // }
   return (
     <>
       <Input
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
-          if (e.target.value) {
-            runSearch();
-          }
+          setShowResult(true);
+          runSearch();
+        }}
+        onFocus={() => {
+          setShowResult(true);
+        }}
+        onBlur={() => {
+          setShowResult(false);
         }}
         placeholder="Search movies..."
       />
 
-      <button onClick={runSearch}>Search</button>
-
-      {/* Example results */}
-      <div
-        style={{
-          position: "absolute",
-          width: "20%",
-          height: "95vh",
-          zIndex: 99,
-          backgroundColor: "white",
-          overflow: "scroll",
-        }}
-      >
-        <div className="overflow-scroll">
-          {results.map((movie: any) => (
-            <div className="p-4">{movie.title}</div>
-          ))}
+      <Button onClick={runSearch}>Search</Button>
+      {showResult && (
+        <div
+          style={{
+            backgroundColor:"white",
+            position: "absolute",
+            top:"3em",
+            right:"2em",
+            width: "20%",
+            height: "95vh",
+            zIndex: 99,
+            borderRadius: "2em",
+            overflow: "scroll",
+          }}
+        >
+          <div className="overflow-scroll">
+            {results.map((movie: any) => (
+              <DVDcard
+              key={movie.id}
+              title={movie.title}
+              poster_path={`${process.env.TMDB_IMAGE_SERVICE_URL}/original${movie.poster_path}`}
+              id={movie.id}
+              key={movie.id}
+              vote_average={movie.vote_average}
+              
+              ></DVDcard>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
 export default SearchSection;
+//onchange => display the searchResult window
+//input onchange events show a block of blank
+//when runSearch is called, it has to display actual values inside the blank block
