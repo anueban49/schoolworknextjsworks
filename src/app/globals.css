@@ -22,7 +22,9 @@ body {
   flex-direction: column;
 
 }
-
+.heroText {
+  font-size: 2em;
+}
 h {
 
 font-weight: 500;
