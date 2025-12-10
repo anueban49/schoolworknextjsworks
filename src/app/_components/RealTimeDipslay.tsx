@@ -20,7 +20,7 @@ const RealTimeClock: React.FC = () => {
   });
 
   return (
-    <div>
+    <div className="text-white">
       <h1>{formattedTime}</h1>
     </div>
   );

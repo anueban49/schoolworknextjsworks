@@ -1,47 +1,70 @@
 "use client";
 //this page will be notetaking for the whole school stuff.
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import RealTimeDipslay from "../app/_components/RealTimeDipslay";
-import { Card } from "@/components/ui/card";
+import Link from "next/link";
+
 export default function LandingPage() {
   const [showNotes, setShowNotes] = useState(false);
   const [showLinks, setShowLinks] = useState(false);
-
+  const router = useRouter();
   return (
-    <>
-      <div className="box-border w-full h-screen bg-gray-700 flex flex-col align-center ">
-        <div className="w-full h-20 bg-gray-500 flex p-10">
-          <div className="w-5xl flex flex-row align-center justify-between p-10 text-2xl text-white">
-            <button
-              className="w-fit px-10 rounded-2xl h-10 bg-gray-400"
-              onMouseEnter={() => {
-                setShowNotes(true);
-              }}
-              onMouseLeave={() => {
-                setShowNotes(false);
-              }}
-            >
-              Notes
-            </button>
-            {showNotes && (
-              <div className="top-12 absolute w-1/3 h-1/3 bg-gray-200">
-                Notes
-              </div>
-            )}
-            <RealTimeDipslay />
-            <button
-              className="w-fit h-10 bg-gray-400"
-              onMouseEnter={() => {
-                setShowLinks(true);
-              }}
-            >
-              Project Links
-            </button>
-          </div>
+
+    <div id="body" className="relative box-border w-full h-screen bg-gray-700">
+      <div id="header" className="w-full h-20 bg-gray-500 flex items-center justify-center ">
+        <div className="flex flex-row items-center gap-20">
+          <RealTimeDipslay />
+          <button
+            className="w-fit px-10 rounded-2xl h-10 bg-gray-400"
+            onMouseEnter={() => {
+              setShowNotes(true);
+            }}
+            onMouseLeave={() => {
+              setShowNotes(false);
+            }}
+          >
+            Notes
+          </button>
+          <button
+            className="w-fit px-10 rounded-2xl h-10 bg-gray-400"
+
+            onClick={() => {
+              setShowLinks(true);
+            }}
+          >
+            Project Links
+          </button>
+          <button className="w-fit px-10 rounded-2xl h-10 bg-gray-400">Recent</button>
         </div>
-        <div>Recent</div>
       </div>
-    </>
+      <div className="w-screen h-fit p-10">
+        {showLinks && (
+          <>
+            <div className="w-120 h-120 bg-gray-300 bg-opacity-50 rounded-2xl p-8">
+              Links:
+              <div>
+                <Link href="/moviedynamic" className="hover:text-blue-800">Dynamic movie</Link>
+              </div>
+              <button onClick={() => {
+                return <>
+                  <div>
+                    <Link href="/SmallProjects/carousel" className="hover:text-blue-800">Carousel</Link>
+                  </div>
+                  <div>
+                    <Link href="/SmallProjects/realEstate" className="hover:text-blue-800">Real Estate</Link>
+                  </div>
+
+
+                </>
+              }}>Other Small Projects</button>
+
+            </div></>
+        )}
+      </div>
+    </div>
+
   );
 }
+//on-hover display plans:
+//
