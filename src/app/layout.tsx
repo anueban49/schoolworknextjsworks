@@ -1,6 +1,14 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ReactNode } from "react";
+import { Orbitron } from "next/font/google";
+
+const orbitron = Orbitron({
+  subsets: ["latin"],       // required subset
+  display: "swap",          // controls font swap behavior
+  variable: "--font-orbitron", // optional: creates a CSS variable
+  weight: ["400", "700"],   // optional: choose weights if not using variable font
+});
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",

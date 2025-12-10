@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-// import { Form } from "react-hook-form";
+import { Form } from "react-hook-form";
 import {
   Form,
   useFormField,
@@ -18,15 +18,6 @@ import {
   FormMessage,
   FormField,
 } from "@/components/ui/form";
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 5;
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg, image/jpg, image/png, image/webp"];
-const ImageSchema = z
-  .instanceof(File, { message: "Please upload your profile image" })
-  .refine((file) => file.size <= MAX_UPLOAD_SIZE, `Max size is 5MB.`)
-  .refine(
-    (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
-    `jps, jpeg, png, webp are accepted.`
-  );
 //types of data configured.
 const formSchema = z.object({
   firstName: z.string().min(2, "length must be more than 2 character").max(50),
@@ -34,9 +25,8 @@ const formSchema = z.object({
   email: z.string().email("Invalid email address"),
   username: z.string().min(5).max(10),
   DoB: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  image: ImageSchema,
+  image: z.string(),
   password: z.string().min(8).max(20),
-  phoneNumber: z.string(),
 });
 const section = () => {};
 //image input -> need to be researched
@@ -85,8 +75,7 @@ export default function FormPage() {
       email: "",
       DoB: "",
       password: "",
-      image: undefined,
-      phoneNumber: "",
+      image: "",
     },
   });
 
@@ -105,28 +94,16 @@ export default function FormPage() {
         type: "email",
       },
       {
-        name: "phoneNumber",
-        label: "Phone Number",
-        placeholder: "12345678",
-      },
-      {
-        name: "password",
-        label: "Password",
-        placeholder: "••••••••",
-        type: "password",
-      },
-    ],
-    3: [
-      {
         name: "DoB",
         label: "Date of Birth",
         placeholder: "1990-01-15",
         type: "date",
       },
       {
-        name: "image",
-        label: "Profile Image URL",
-        placeholder: "http://example.com/image.jpg",
+        name: "password",
+        label: "Password",
+        placeholder: "••••••••",
+        type: "password",
       },
     ],
   };
