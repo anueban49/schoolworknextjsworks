@@ -22,7 +22,7 @@ export default function LandingPage() {
     >
       <div
         id="header"
-        className="w-full h-20 bg-gray-500 flex items-center justify-center "
+        className="w-10em h-20 bg-gray-500 flex items-center justify-center "
       >
         <div className="flex flex-row items-center gap-20">
           <button

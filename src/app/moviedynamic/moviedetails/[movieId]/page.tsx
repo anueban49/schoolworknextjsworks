@@ -27,12 +27,16 @@ export type DataTypes = {
   vote_count: number;
 };
 export type VideoTypes = {
-  id: string;
-  key: string;
+  iso_639_1: string;
+  iso_3166_1: string;
   name: string;
+  key: string;
   site: string;
+  size: number;
   type: string;
   official: boolean;
+  published_at: string;
+  id: string;
 };
 
 export type VideoResponse = {
@@ -58,7 +62,7 @@ const AUTH_HEADERS = {
     Authorization: `Bearer ${process.env.API_KEY}`,
   },
 };
-const fetchJSON = (url: any) => {
+const fetchJSON = async (url: any) => {
   return fetch(url, AUTH_HEADERS).then((res) => res.json());
 };
 const Moviedetails = ({ params }: Details) => {
@@ -72,16 +76,22 @@ const Moviedetails = ({ params }: Details) => {
       try {
         const [detailsRes, videoRes] = await Promise.all([
           fetchJSON(`${API_BASE}/movie/${movieId}?language=en-US`),
-          fetchJSON(`${API_BASE}/movie/${movieId}/videos?language=en-US`),
+          fetchJSON(
+            `${process.env.TMDB_BASE_URL}/movie/${movieId}/videos?language=en-US`
+          ),
         ]);
         setDetails(detailsRes);
-        setVideos(videoRes.results);
         setGenre(detailsRes.genres);
-        console.log(detailsRes.genres);
-        console.log("videores by movieID:", videoRes.results);
-        console.log(
-          `${API_BASE}/movie/${movieId}/videos?language=en-US&api_key=1abbd015e9d6c505de4fa248b1f2093c`
+        const allVideos = videoRes.results;
+        const officialTrailer = allVideos.find(
+          (video: VideoTypes) =>
+            video.site === "YouTube" &&
+            video.type === "Trailer" &&
+            video.official === true
         );
+        setVideos(officialTrailer ? [officialTrailer] : allVideos);
+        console.log(detailsRes.genres);
+        console.log("videores length:", videoRes.results.length);
       } catch (error) {
         console.error(error);
       }
@@ -97,7 +107,11 @@ const Moviedetails = ({ params }: Details) => {
           <h1 className="text-4xl font-medium">{details?.title}</h1>
           <div>
             <p>{details?.release_date}</p>
-            <p>{details?.vote_average.toFixed(1)}</p>
+            <p className="flex">
+              {" "}
+              <Star style={{ color: "yellow", fill: "yellow" }} />
+              {details?.vote_average.toFixed(1)}
+            </p>
           </div>
         </div>
         <Carousel
@@ -120,10 +134,10 @@ const Moviedetails = ({ params }: Details) => {
             ></CarouselItem>
             {videos.map((video) =>
               video.site === "YouTube" ? (
-                <CarouselItem key={video.id} className="">
+                <CarouselItem key={video.id}>
                   <iframe
                     className="w-full aspect-12/5 object-contain"
-                    src={`${process.env.TMDB_BASE_URL}/movie/${video.id}/videos?language=en-US&api_key=${process.env.API_KEY}`}
+                    src={`https://www.youtube.com/embed/${video.key}`}
                     title={video.name}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen

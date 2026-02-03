@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { Calendar } from "@/components/ui/calendar";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 // import { Form } from "react-hook-form";
+
+//current code structure: each field input has a same component, but how do I add this configuariton of password and confirmpassword
 import {
   Form,
   useFormField,
@@ -20,6 +22,7 @@ import {
 } from "@/components/ui/form";
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg, image/jpg, image/png, image/webp"];
+
 const ImageSchema = z
   .instanceof(File, { message: "Please upload your profile image" })
   .refine((file) => file.size <= MAX_UPLOAD_SIZE, `Max size is 5MB.`)
@@ -27,19 +30,34 @@ const ImageSchema = z
     (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
     `jps, jpeg, png, webp are accepted.`
   );
-//types of data configured.
-const formSchema = z.object({
-  firstName: z.string().min(2, "length must be more than 2 character").max(50),
-  lastName: z.string().min(2).max(50),
-  email: z.string().email("Invalid email address"),
-  username: z.string().min(5).max(10),
-  DoB: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  image: ImageSchema,
-  password: z.string().min(8).max(20),
-  phoneNumber: z.string(),
-});
-const section = () => {};
-//image input -> need to be researched
+
+const formSchema = z
+  .object({
+    firstName: z
+      .string()
+      .nonempty("field must not be empty")
+      .min(2, "length must be more than 2 character")
+      .max(50),
+    lastName: z.string().min(2).max(50),
+    email: z.email("Invalid email address"),
+    username: z.string().min(5).max(10),
+    DoB: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    image: ImageSchema,
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .regex(/[0-9]/, "Password must contain at least one number"),
+
+    confirmPassword: z
+      .string()
+      .min(8, "Confirm Password must be at least 8 characters long"),
+    phoneNumber: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Password don't match",
+    path: ["confirmPassword"],
+  });
 
 function FillboxReusable({
   control,
@@ -60,9 +78,33 @@ function FillboxReusable({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel>{label} 
+            <span className="text-red-500">*</span>
+            </FormLabel>
           <FormControl>
-            <Input type={type} placeholder={placeholder} {...field} />
+            {type === "file" ? (
+              <label className="flex flex-col items-center justify-center border-dashed border-2 border-gray-300 rounded-lg p-6 cursor-pointer hover:border-blue-500">
+                {field.value ? (
+                  <img
+                    src={URL.createObjectURL(field.value)}
+                    alt="Preview"
+                    className=" object-cover "
+                  />
+                ) : (
+                  <span className="text-gray-500">
+                    {placeholder || "Upload image"}
+                  </span>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => field.onChange(e.target.files?.[0])}
+                />
+              </label>
+            ) : (
+              <Input type={type} placeholder={placeholder} {...field} />
+            )}
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -72,7 +114,6 @@ function FillboxReusable({
 }
 
 export default function FormPage() {
-  const router = useRouter();
   const [step, setStep] = useState(1);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -85,17 +126,32 @@ export default function FormPage() {
       email: "",
       DoB: "",
       password: "",
+      confirmPassword: "",
       image: undefined,
       phoneNumber: "",
     },
   });
 
-  // Define what fields show in each step
   const stepFields = {
     1: [
-      { name: "firstName", label: "First Name", placeholder: "John" },
-      { name: "lastName", label: "Last Name", placeholder: "Doe" },
-      { name: "username", label: "Username", placeholder: "johndoe123" },
+      {
+        name: "firstName",
+        label: "First Name",
+        placeholder: "John",
+        type: "text",
+      },
+      {
+        name: "lastName",
+        label: "Last Name",
+        placeholder: "Doe",
+        type: "text",
+      },
+      {
+        name: "username",
+        label: "Username",
+        placeholder: "johndoe123",
+        type: "text",
+      },
     ],
     2: [
       {
@@ -108,10 +164,17 @@ export default function FormPage() {
         name: "phoneNumber",
         label: "Phone Number",
         placeholder: "12345678",
+        type: "text",
       },
       {
         name: "password",
         label: "Password",
+        placeholder: "••••••••",
+        type: "password",
+      },
+      {
+        name: "confirmPassword",
+        label: "Confirm Password",
         placeholder: "••••••••",
         type: "password",
       },
@@ -120,13 +183,14 @@ export default function FormPage() {
       {
         name: "DoB",
         label: "Date of Birth",
-        placeholder: "1990-01-15",
+        placeholder: "",
         type: "date",
       },
       {
         name: "image",
         label: "Profile Image URL",
-        placeholder: "http://example.com/image.jpg",
+        placeholder: "",
+        type: "file",
       },
     ],
   };
@@ -149,7 +213,6 @@ export default function FormPage() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Form submitted:", values);
-    // Handle submission (API call, redirect, etc.)
   }
 
   const currentFields = stepFields[step as keyof typeof stepFields];
@@ -159,8 +222,7 @@ export default function FormPage() {
     <div className="w-full h-screen flex flex-row justify-center items-center">
       <Card className="w-full max-w-md">
         <CardContent className="p-6 flex flex-col gap-4">
-          {/* Header */}
-          <div className="text-center">
+          <div className="">
             <img src="/misc/Main 1.svg" alt="Logo" className="mx-auto mb-4" />
             <h1 className="text-2xl font-bold">Join Us!</h1>
             <p className="text-sm text-gray-600 mt-2">
@@ -168,26 +230,8 @@ export default function FormPage() {
             </p>
           </div>
 
-          {/* Progress indicator */}
-          <div className="flex justify-center gap-2 my-4">
-            {Array.from({ length: totalSteps }).map((_, idx) => (
-              <div
-                key={idx}
-                className={`h-2 w-16 rounded-full ${
-                  idx + 1 <= step ? "bg-blue-500" : "bg-gray-300"
-                }`}
-              />
-            ))}
-          </div>
-
-          <p className="text-center text-sm font-medium">
-            Step {step} of {totalSteps}
-          </p>
-
-          {/* Form */}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {/* Render current step fields */}
               {currentFields.map((field) => (
                 <FillboxReusable
                   key={field.name}
@@ -195,11 +239,10 @@ export default function FormPage() {
                   name={field.name}
                   label={field.label}
                   placeholder={field.placeholder}
-                  type={field.placeholder}
+                  type={field.type}
                 />
               ))}
 
-              {/* Navigation buttons */}
               <div className="flex gap-2 pt-4">
                 {step > 1 && (
                   <Button
@@ -214,10 +257,14 @@ export default function FormPage() {
 
                 {step < totalSteps ? (
                   <Button type="button" onClick={handleNext} className="flex-1">
-                    Next
+                    Continue {step}/{totalSteps}
                   </Button>
                 ) : (
-                  <Button type="submit" className="flex-1">
+                  <Button
+                    type="submit"
+                    className="flex-1"
+                    onSubmit={form.handleSubmit}
+                  >
                     Submit
                   </Button>
                 )}

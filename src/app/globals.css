@@ -20,40 +20,30 @@ body {
   color: black;
   display: flex;
   flex-direction: column;
-
 }
 .heroText {
   font-size: 2em;
 }
 
-
 .orbitron-regular {
   font-family: "Orbitron", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 400;   /* valid weight */
+  font-weight: 400; /* valid weight */
   font-style: normal;
 }
 
 h {
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 24px;
 
-font-weight: 500;
-font-style: Medium;
-font-size: 24px;
-
-line-height: 36px;
-letter-spacing: 0.07px;
-
+  line-height: 36px;
+  letter-spacing: 0.07px;
 }
-p {
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: -0.31px;
-  color: #4a5565;
-}
+
 .iconImg {
   width: 48px;
   aspect-ratio: 1/1;
-
 }
 .propertyImage {
   width: 100%;

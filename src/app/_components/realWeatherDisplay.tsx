@@ -27,16 +27,17 @@ const WeatherWidget: React.FC = () => {
       className="text-white p-4 rounded-lg animate-out"
       style={{
         fontFamily: "Orbitron, sans-serif",
-        fontWeight: "700",
-        fontSize: "4em",
-        fontStyle: "revert",
       }}
-
     >
-      <h2 className="font-orbitron text-xl">
+      <h2
+        style={{
+          fontWeight: "700",
+          fontSize: "1em",
+        }}
+      >
         Weather in {weather.location.name}
       </h2>
-      <p>🌡 Temp: {weather.current.temp_c} °C</p>
+      <p className="text-white">🌡 Temp: {weather.current.temp_c} °C</p>
       <p>💨 Wind: {weather.current.wind_kph} kph</p>
       <p>☁️ Condition: {weather.current.condition.text}</p>
       <img
